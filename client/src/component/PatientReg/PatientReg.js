@@ -133,7 +133,7 @@ class Register extends Component {
                   type="text"
                   className="form-control"
                   name="disease"
-                  placeholder="Enter your Phone Number"
+                  placeholder="Enter Disease"
                   value={this.state.disease}
                   onChange={this.onChange}
                 />

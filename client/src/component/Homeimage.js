@@ -9,27 +9,23 @@ class Homeimage extends Component {
         return (
         <div>
         <Card className="text-white">
-        <Card.Img src={Img} alt="Card image" height="500" style={{opacity:"0.6"}}/>
+        <Card.Img src={Img} alt="Card image" height="700" style={{opacity:"0.6"}}/>
                 <Card.ImgOverlay>
                     <Card.Title>
                     <MDBContainer >
-                        <h1 className="font-weight-bold text-danger">Lifescape Hospital Ltd</h1>
-                        <br>
-                        
-                        
-                        
-                        </br>
-                        <p className="font-weight-bold text-danger">Curing Generations for Ages</p>
+                        <h1 className="font-weight-bold display-1 text-danger mt-5">
+                            UCTH
+                        </h1>
+                        <p className="font-weight-bold text-danger">
+                            Service * Integrity * Empathy * Innovation
+                        </p>
                     </MDBContainer>
                     </Card.Title>
                     
                     
                 </Card.ImgOverlay>
         </Card>
-        <br />
-        <br/>
-        
-        </div> );
+        </div>);
     }
 }
  

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Navber from './DocNavbar';
+// import Navber from './DocNavbar';
+// import Footer from '../Footer';
 import axios from 'axios';
 
-import Footer from '../Footer';
 import 'mdbreact';
 
 class Doctor extends Component {
@@ -61,8 +61,8 @@ class Doctor extends Component {
 
       const { patients, isLoading} = this.state;
         return ( 
-        <div className ="bg-dark">
-            <Navber />
+        <div className ="bg-dark" style={{ height: '100vh' }}>
+            {/* <Navber /> */}
             <br/>
             <h2 className="text-white" align="center">Doctor</h2>
             <h3 className="text-white" align="center">Welcome!</h3>
@@ -134,7 +134,7 @@ class Doctor extends Component {
   </div>
 </div>
 </div>
-<Footer/>
+{/* <Footer/> */}
 
   </div>
     

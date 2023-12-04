@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Navber from './PatientNavbar';
-import Footer from '../Footer';
+// import Navber from './PatientNavbar';
+// import Footer from '../Footer';
 import doc_img from './doctor1.jpg';
 import 'mdbreact';
 import Image from 'react-bootstrap/Image';
@@ -91,8 +91,9 @@ class PatientHome extends Component {
     render() { 
         return(
           <div className="bg-dark">
-            <Navber />
-            <h2 className="text-white my-3" align="center">Patient Home</h2>
+            {/* <Navber /> */}
+            <br/>
+            <h2 className="text-white mb-3" align="center">Patient Home</h2>
             <h3 className="text-white my-3" align="center">Welcome!</h3>
 
             <Row>
@@ -228,7 +229,7 @@ class PatientHome extends Component {
             </Row>
 
 
-            <Footer />
+            {/* <Footer /> */}
           </div>
         )
 

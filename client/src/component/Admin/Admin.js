@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Navber from './AdminNavbar';
+// import Navber from './AdminNavbar';
+// import Footer from '../Footer';
 import axios from 'axios';
-import Footer from '../Footer';
 
 class Admin extends Component {
 
@@ -67,7 +67,7 @@ class Admin extends Component {
     render() { 
         return ( 
         <div className="bg-dark">
-            <Navber />
+            {/* <Navber /> */}
             <br/>
             <h2 className="text-white" align="center">Administrator Home</h2>
             <h3 className="text-white" align="center">Welcome!</h3>
@@ -214,7 +214,7 @@ class Admin extends Component {
             </div>
             <br/>
             <br/>
-            <Footer />
+            {/* <Footer /> */}
                 
         </div> 
         );

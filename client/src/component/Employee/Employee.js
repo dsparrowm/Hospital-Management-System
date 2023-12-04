@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Navber from './EmpNavbar';
-import Footer from '../Footer';
+// import Navber from './EmpNavbar';
+// import Footer from '../Footer';
 import Axios from 'axios';
 
 class Employee extends Component {
@@ -164,7 +164,7 @@ class Employee extends Component {
     render() { 
         return ( 
         <div className="bg-dark">
-            <Navber />
+            {/* <Navber /> */}
             <br/>
             <h2 className="text-white" align="center">Employee Home</h2>
             <h3 className="text-white" align="center">Welcome!</h3>
@@ -518,7 +518,7 @@ class Employee extends Component {
 
     <br/>
     <br/>
-    <Footer />
+    {/* <Footer /> */}
                 
   </div> 
         );
