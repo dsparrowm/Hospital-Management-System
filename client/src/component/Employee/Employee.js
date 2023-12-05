@@ -18,8 +18,8 @@ class Employee extends Component {
       patient_id: '',
       doctor_id: '',
 
-      doctor_first_name: '',
       doctor_address: '',
+      doctor_first_name: '',
       doctor_last_name: '',
       doctor_email: '',
       doctor_password: '',
@@ -36,10 +36,11 @@ class Employee extends Component {
 
       new_salary: '',
       update_doctor_id: '',
-
+      selected_patient: {},
+      doctors: [],
+      patients: [],
       errors: {}
-    }
-
+    };
     this.onChange = this.onChange.bind(this)
     this.onSubmit1 = this.onSubmit1.bind(this)
     this.onSubmit2 = this.onSubmit2.bind(this)
@@ -49,7 +50,11 @@ class Employee extends Component {
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+    if (e.target.name === 'patient_id') {
+      const selectedPatient = this.state.patients.find(patient => patient.patient_id === parseInt(e.target.value));
+      this.setState({ selected_patient: selectedPatient });
+    }
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   onSubmit1(e) {
@@ -80,7 +85,7 @@ class Employee extends Component {
       specialisation: this.state.doctor_specialization,
       shift_time: '10:00 - 02:00'
     }
-    
+
     Axios.post('/doctor/register', ass_doc)
       .then(response => {
         return response.data;
@@ -140,6 +145,18 @@ class Employee extends Component {
 
 
   componentDidMount() {
+    Axios.post('/patient/patientsWithoutDoctors')
+      .then(res => {
+        this.setState({ patients: res.data });
+      })
+      .catch(err => console.log(err));
+
+    Axios.post('/doctor/allDoctors')
+      .then(res => {
+        this.setState({ doctors: res.data });
+      })
+      .catch(err => console.log(err));
+
     Axios.get('/admin/details', {
       headers: {
         authorization: sessionStorage.getItem('usertoken')
@@ -157,16 +174,13 @@ class Employee extends Component {
           salary: details.salary
         });
       });
-
   }
-
-    
     render() { 
         return ( 
         <div className="bg-dark">
             {/* <Navber /> */}
             <br/>
-            <h2 className="text-white" align="center">Employee Home</h2>
+            <h2 className="text-white" align="center">Admin Home</h2>
             <h3 className="text-white" align="center">Welcome!</h3>
             <br/>            
             <div className="row">
@@ -221,44 +235,92 @@ class Employee extends Component {
           <h2 className="text-primary">Assign Patient to Doctor</h2>
         </div>
         <br/>
-
         <div className="form-group">
-        <label htmlFor="name">Patient ID</label>
-        <input
-          type="text"
+        <label htmlFor="patient" className='font-weight-bold'>Patient</label>
+        <select
+          defaultValue=""
           className="form-control"
           name="patient_id"
-          placeholder="Enter Patient ID"
-          value={this.state.patient_id}
-          onChange={this.onChange}
-        />
+          onChange={this.onChange}>
+            <option disabled={true} value="">
+              --Choose and option--
+            </option>
+            <>
+              {this.state.patients.map((patient, i) => {
+                return (<option key={i} value={patient.patient_id}>{`${patient.first_name} ${patient.last_name}`}</option>)
+              })}
+            </>
+        </select>
       </div>
+      <br/>
+      <>
+      {this.state.selected_patient.patient_id && <>
+        <div className="col-sm-6">
+          <h4 className="text-primary">Patient Information</h4>
+        </div>
+        <br/>
+        <table className="table col-md-6" >
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <td>
+                {`${this.state.selected_patient.first_name || ''} ${this.state.selected_patient.last_name || ''}`}
+              </td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td> {this.state.selected_patient.email} </td>
+            </tr>
+            <tr>
+            <td>Address</td>
+            <td> {this.state.selected_patient.address} </td>
+          </tr>
+          <tr>
+          <td>Phone number</td>
+              <td> {this.state.selected_patient.phone_no} </td>
+          </tr>
+          <tr>
+              <td>Disease </td>
+              <td> {this.state.selected_patient.disease} </td>
+          </tr>
+
+          </tbody>
+        </table>
+        <br/>
+        </>}
+      </>
+
       <div className="form-group">
-        <label htmlFor="name">Doctor ID</label>
-        <input
-          type="text"
+        <label htmlFor="doctor" className='font-weight-bold'>Doctor</label>
+        <select
+          defaultValue=""
           className="form-control"
           name="doctor_id"
-          placeholder="Enter Doctor ID"
-         value={this.state.doctor_id}
-          onChange={this.onChange}
-        />
+          onChange={this.onChange}>
+          <option disabled={true} value="">
+            --Choose and option--
+          </option>
+          <>
+            {this.state.doctors.map((doctor, i) => {
+              return (<option key={i} value={doctor.id}>
+                {`${doctor.name}`}
+              </option>)
+            })}
+          </>
+        </select>
       </div>
       <button
-                type="submit"
-                className="btn btn-lg btn-primary btn-block"
-              >
-              Assign 
-              </button>
+        type="submit"
+        className="btn btn-lg btn-primary btn-block"
+      >
+      Assign 
+      </button>
       </form>
       </div>
     </div>
       </div>
       </div>
-      
-
-
-
+  
       <div className="row">
           <div className = "col">
           <div className="container mr-3">

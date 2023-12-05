@@ -19,7 +19,7 @@ import PatientHome from './component/Patient/PatientHome'
 import Doctor from './component/Doctor/Doctor'
 import Employee from './component/Employee/Employee'
 
-import Admin from './component/Admin/Admin'
+// import Admin from './component/Admin/Admin'
 // import AdHome from './component/Admin/AdHome'
 // import AdminAbout from './component/Admin/AdminAbout'
 // import AdminGallery from './component/Admin/AdminGallery';
@@ -68,13 +68,13 @@ function App() {
       <Route exact path="/doctors/login/contact" component = {DocContact}/> */}
 
 
-      <Route exact path="/employee/login/employee_home" component = {Employee} />
-      {/* <Route exact path="/employee/login/home" component = {EmpHome}/>
+      {/* <Route exact path="/employee/login/employee_home" component = {Employee} />
+      <Route exact path="/employee/login/home" component = {EmpHome}/>
       <Route exact path="/employee/login/about" component = {EmpAbout}/>
       <Route exact path="/employee/login/gallery" component = {EmpGallery}/>
       <Route exact path="/employee/login/contact" component = {EmpContact}/> */}
 
-      <Route exact path="/administrator/login/admin_home" component = {Admin} />
+      <Route exact path="/administrator/login/admin_home" component = {Employee} />
       {/* <Route exact path="/administrator/login/home" component = {AdHome}/>
       <Route exact path="/administrator/login/about" component = {AdminAbout}/>
       <Route exact path="/administrator/login/gallery" component = {AdminGallery}/>

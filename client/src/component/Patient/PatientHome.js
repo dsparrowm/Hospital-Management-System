@@ -99,9 +99,6 @@ class PatientHome extends Component {
             <Row>
               <Col>
                 <Row>
-
-
-
                 <div className="col">
                     <div className="container ml-3">
                       <div className="jumbotron mt-5" style ={{backgroundColor:"#e0e0e0"}}>
