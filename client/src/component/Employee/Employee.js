@@ -145,13 +145,13 @@ class Employee extends Component {
 
 
   componentDidMount() {
-    Axios.post('/patient/patientsWithoutDoctors')
+    Axios.get('/patient/patientsWithoutDoctors')
       .then(res => {
         this.setState({ patients: res.data });
       })
       .catch(err => console.log(err));
 
-    Axios.post('/doctor/allDoctors')
+    Axios.get('/doctor/allDoctors')
       .then(res => {
         this.setState({ doctors: res.data });
       })
