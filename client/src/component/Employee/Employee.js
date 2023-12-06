@@ -7,6 +7,10 @@ class Employee extends Component {
   constructor() {
     super();
     this.state = {
+      isErrors: false,
+      isSuccess: false,
+      errorMsg: '',
+      successMsg: '',
       first_name: '',
       last_name: '',
       email: '',
@@ -47,6 +51,15 @@ class Employee extends Component {
     this.onSubmit3 = this.onSubmit3.bind(this)
     this.onSubmit4 = this.onSubmit4.bind(this)
     this.onSubmit5 = this.onSubmit5.bind(this)
+    this.clearToast = this.clearToast.bind(this);
+  }
+
+  clearToast() {
+    if (this.state.isErrors || this.state.isSuccess) {
+      setInterval(() => {
+        this.setState({ isErrors: false, isSuccess: false });
+      }, 5000);
+    }
   }
 
   onChange(e) {
@@ -67,9 +80,17 @@ class Employee extends Component {
 
     Axios.post('/admin/assign_doctor', ass_doc)
       .then(response => {
+        this.setState({ isSuccess: true });
+        this.setState({ successMsg: 'Assigned Successful!' });
+        this.clearToast();
         return response.data;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ isErrors: true });
+        this.setState({ errorMsg: 'Assignment Failed!' });
+        this.clearToast();
+        console.log(err);
+      });
   }
 
   onSubmit2(e) {
@@ -93,25 +114,31 @@ class Employee extends Component {
       .catch(err => console.log(err));
   }
 
-
   onSubmit3(e) {
     e.preventDefault();
 
-    const data = {
+    const reqObj = {
       patient_email: this.state.bill_patient_email,
       medicine_cost: this.state.medicine_cost,
       room_charge: this.state.room_charge,
       misc_charge: this.state.misc_charge,
-      operation_charge: this.state.operation_charge,
-    }
+      operation_charge: this.state.operation_charge
+    };
 
-    Axios.post('/admin/bill', data)
-      .then(response => {
-        return response.data;
+    Axios.post('/admin/bill', reqObj)
+      .then(res => {
+        this.setState({ isSuccess: true });
+        this.setState({ successMsg: 'Bill Generate!' });
+        this.clearToast();
+        return res.data;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ isErrors: true });
+        this.setState({ errorMsg: 'Generation Failed!' });
+        this.clearToast();
+        console.log(err);
+      });
   }
-
 
   onSubmit4(e) {
     e.preventDefault();
@@ -121,8 +148,8 @@ class Employee extends Component {
     }
 
     Axios.post('/doctor/delete', data)
-      .then(response => {
-        return response.data;
+      .then(res => {
+        return res.data;
       })
       .catch(err => console.log(err));
   }
@@ -179,8 +206,17 @@ class Employee extends Component {
   }
     render() { 
         return ( 
-        <div className="bg-dark">
+        <div className="bg-dark" style={{ position: 'relative' }}>
             {/* <Navber /> */}
+            {
+              this.state.isErrors && (<div class="alert alert-danger" role="alert" style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '5' }}>
+              {this.state.errorMsg}
+            </div>)
+            }
+
+            {this.state.isSuccess && (<div class="alert alert-success" role="alert" style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '5' }}>
+              {this.state.successMsg}
+            </div>)}
             <br/>
             <h2 className="text-white" align="center">Admin Home</h2>
             <h3 className="text-white" align="center">Welcome!</h3>
