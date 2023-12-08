@@ -127,42 +127,75 @@ admin.post('/assign_doctor', (req, res) => {
 
 admin.post('/bill', (req, res) => {
     const data = {
-        patient_email: req.body.patient_email,
-        medicine_cost: req.body.medicine_cost,
-        room_charge: req.body.room_charge,
-        misc_charge: req.body.misc_charge,
-        operation_charge: req.body.operation_charge,
-    }
-
-    const sql = `SELECT * FROM patient WHERE email = "${data.patient_email}"`;
-
-
-    db.query(sql, (err1, result1) => {
-        if(err1) console.log(err1);
-
-
-        if(result1[0] !== undefined) {
-
-            const update = `
-                            UPDATE bill
-                            SET
-                                medicine_cost = medicine_cost + ${data.medicine_cost},
-                                operation_charge = operation_charge + ${data.operation_charge},
-                                room_charge = room_charge + ${data.room_charge},
-                                misc_charge = misc_charge + ${data.misc_charge}
-                            WHERE patient_id = ${result1[0].patient_id}
-                            `
-            console.log(update);
-
-            db.query(update, (err2, result2) =>{
-                if(err2) console.log(err2);
-                res.send("Yes   ")
-            })
-        }else {
-            res.send("already exist...");
-        }
-    })
-});
-
-
+      patient_id: req.body.patient_id,
+      patient_email: req.body.patient_email,
+      medicine_cost: req.body.medicine_cost,
+      room_charge: req.body.room_charge,
+      misc_charge: req.body.misc_charge,
+      operation_charge: req.body.operation_charge,
+    };
+  
+    const checkSql = `SELECT * FROM bill WHERE patient_email = "patient1@gmail.com"`;
+  
+    db.query(checkSql, (err1, result1) => {
+      console.log(`This is result 1: ${result1[0]}`)
+      if (err1) {
+        console.log(err1);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+  
+      if (result1[0] !== undefined) {
+        // Update existing billing record
+        const updateSql = `
+          UPDATE bill
+          SET
+            medicine_cost = ${data.medicine_cost},
+            operation_charge = ${data.operation_charge},
+            room_charge = ${data.room_charge},
+            misc_charge = ${data.misc_charge}
+          WHERE patient_email = '${data.patient_email}'
+        `;
+  
+        db.query(updateSql, (err2, result2) => {
+          if (err2) {
+            console.log(err2);
+            res.status(500).send('Internal Server Error');
+            return;
+          }
+  
+          res.json({ message: 'Bill updated', result2 });
+        });
+      } else {
+        // Create new billing record
+        const insertSql = `
+          INSERT INTO bill (
+            patient_email,
+            medicine_cost,
+            room_charge,
+            misc_charge,
+            operation_charge
+          )
+          VALUES (
+            "${data.patient_email}",
+            ${data.medicine_cost},
+            ${data.room_charge},
+            ${data.misc_charge},
+            ${data.operation_charge}
+          )
+        `;
+  
+        db.query(insertSql, (err3, result3) => {
+          if (err3) {
+            console.log(err3);
+            res.status(500).send('Internal Server Error');
+            return;
+          }
+  
+          res.json({ message: 'Bill created', result3 });
+        });
+      }
+    });
+  });
+  
 module.exports = admin;

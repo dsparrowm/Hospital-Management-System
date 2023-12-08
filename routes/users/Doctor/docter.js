@@ -135,4 +135,13 @@ doctor.post('/update_sal', (req, res) => {
     })
 })
 
+doctor.get('/allDoctors', (req, res) => {
+    const find = `SELECT first_name as name, doctor_id as id FROM doctors`;
+    db.query(find, (err2, doctors) => {
+        if (err2) console.log(err2);
+
+        res.json({doctors})
+    })
+})
+
 module.exports = doctor;

@@ -71,7 +71,7 @@ patient.post('/login', (req, res) => {
         if(result[0] != undefined) {
             if(bcrypt.compareSync(req.body.password, result[0].password)) {
                 let token = jwt.sign(result[0].patient_id, process.env.SECRET_KEY);
-                res.send(token);
+                res.json(token);
             } else {
                 res.status(400).json({ error: 'User does not exist' })
             }
@@ -128,13 +128,27 @@ patient.get('/doctor', (req, res) => {
 
 patient.get('/bill', (req, res) => {
     let patient_id = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY);
+    console.log(`patient id is: ${patient_id}`)
 
-    const bill = `SELECT * FROM bill WHERE patient_id = ${patient_id}`;
-
-    db.query(bill, (err, result) => {
+    const bill = `SELECT * FROM bill WHERE patient_id = ?`;
+    db.query(bill, [patient_id], (err, result) => {
+        console.log(result)
         res.send(result);
     })
 })
 
+
+patient.get('/patientsWithoutDoctors', (req, res) => {
+    let find = `SELECT pati.patient_id, pati.first_name, pati.last_name, pati.address, pati.email, pati.phone_no, pati.disease
+    FROM patient pati
+    LEFT JOIN assign_doctor AS doc ON pati.patient_id = doc.patient_id
+    WHERE doc.doctor_id IS NULL`;
+
+    db.query(find, (err3, patients) => {
+        if(err3) console.log(err3);
+
+        res.json({patients})
+    })
+})
 
 module.exports = patient;

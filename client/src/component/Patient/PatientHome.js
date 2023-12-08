@@ -78,12 +78,22 @@ class PatientHome extends Component {
           }
         })
         .then(res => {
-          this.setState({
-            medicine_cost: res.data[0].medicine_cost,
-            misc_charge: res.data[0].misc_charge,
-            room_charge: res.data[0].room_charge,
-            operation_charge: res.data[0].operation_charge
-          });
+          if (res.data.length === 0) {
+            this.setState({
+              medicine_cost: '0',
+              misc_charge: '0',
+              room_charge: '0',
+              operation_charge: '0'
+            });
+          } else {
+            this.setState({
+              medicine_cost: res.data[0].medicine_cost,
+              misc_charge: res.data[0].misc_charge,
+              room_charge: res.data[0].room_charge,
+              operation_charge: res.data[0].operation_charge
+            });
+          }
+          
         })
     }
 
